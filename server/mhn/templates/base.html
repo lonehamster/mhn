@@ -1,0 +1,95 @@
+<!doctype html>
+<meta charset="UTF-8">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <title>{% block extra_head %}{% endblock %}</title>
+        <script src="/static/js/vendor/jquery.js"></script>
+        <link rel="stylesheet" href="/static/css/foundation.min.css">
+        <link rel="stylesheet" href="/static/css/normalize.css">
+        <script src="/static/js/vendor/foundation.min.js"></script>
+        <script src="/static/js/vendor/modernizr.js"></script>
+        <script src="/static/js/main.js"></script>
+    </head>
+    <body>
+        {% if user.is_authenticated %}
+        <nav class="top-bar" style="margin-bottom: 30px;"  data-topbar>
+            <ul class="title-area">
+                <li class="name">
+                    <h1><a href="{{ url_for('ui.dashboard') }}">蜜罐之心</a></h1>
+                </li>
+            </ul>
+            <section class="top-bar-section">
+                <!-- Left Nav Section -->
+                <ul class="left">
+                    <li><a href="{{ url_for('ui.honeymap') }}">地图</a></li>
+                    <li><a href="{{ url_for('ui.deploy_mgmt') }}">部署蜜罐</a></li>
+                    <li><a href="{{ url_for('ui.get_attacks') }}">记录的攻击</a></li>
+                    <li><a href="{{ url_for('ui.get_feeds', channel='snort.alerts') }}">捕获的事件</a></li>
+                    <li class="has-dropdown">
+                        <a href="{{ url_for('ui.get_rules') }}">规则</a>
+                        <ul class="dropdown">
+                            <li><a href="{{ url_for('ui.get_rules') }}">启用规则/关闭规则</a></li>
+                            <li><a href="{{ url_for('ui.rule_sources_mgmt') }}">规则来源</a></li>
+                            <li><a href="/static/mhn.rules">规则下载</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-dropdown">
+                        <a href="{{ url_for('ui.get_sensors') }}">传感器</a>
+                        <ul class="dropdown">
+                            <li><a href="{{ url_for('ui.get_sensors') }}">查看传感器</a></li>
+                            <li><a href="{{ url_for('ui.add_sensor') }}">添加传感器</a></li>
+                        </ul>
+                    </li>
+
+
+
+			 <li class="has-dropdown">
+                        <a href="/ui/chart">cowrie表</a>
+                        <ul class="dropdown">
+                            <li><a href="/image/top_passwords.svg">Cowrie密码捕获情况排名</a></li>
+                            <li><a href="/image/top_users.svg">Cowrie用户名捕获情况排名</a></li>
+                            <li><a href="/image/top_combos.svg">Cowrie用户名密码组合情况排名</a></li>
+                            <li><a href="/image/top_sessions.svg">Cowrie攻击者排名</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+
+
+
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    <li class="active"><a id="out-btn" href="#">退出登录</a></li>
+                </ul>
+                {% if current_user.has_role('admin') %}
+                <ul class="right">
+                    <li class=""><a id="out-btn" href="{{ url_for('ui.settings') }}">设置</a></li>
+                </ul>
+                {% endif %}
+            </section>
+        </nav>
+        {% endif %}
+        {% block content %}{% endblock %}
+        {% block footer %}
+        <style>
+            #footer {
+                margin-top: 18%;
+                margin-bottom: 80px;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+        <div class="row" id="footer">
+            <div class="small-7 large-centered columns">
+		    <span><big><b>本项目基于: </b></big><span>
+                <a href="http://threatstream.com"><img width="158" height="25" src="/static/img/tslogo.png" /></a>
+                    <span><big><b>平台的MHN项目</b></big><span>
+            </div>
+        </div>
+        {% endblock %}
+        <script src="/static/js/vendor/fastclick.js"></script>
+        <script>
+            $(document).foundation();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}有效载荷{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="small-8 large-centered columns">
+            <h2>有效载荷报告</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-8 large-centered columns">
+            <div class="row">
+                <div class="small-4 columns">
+                    <h4>查询有效载荷</h4>
+                </div>
+            </div>
+            <form id="payload-filter" action="" method="get">
+                <div class="row">
+                    <div class="small-4 columns">
+                        <label>选择传感器事件</label>
+                    </div>
+                    <div class="small-4 pull-4 columns">
+                        <label>正则表达式</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-4 columns">
+                        <select name="channel">
+                            {% for c in channel_list %}
+                            <option {% if c  == channel %}selected{% endif %} value="{{ c }}">{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="small-4 columns">
+                        <input type="text" name="payload" value="{{ payload }}" placeholder="pcre regex" />
+                    </div>
+                    <div class="small-2 columns">
+                        <input class="tiny button" type="submit" value="查询" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div style="max-width: 90.5rem;" class="row">
+        <div class="large-12 columns">
+            <table style="width:100%;">
+                <thead>
+                    <tr>
+                        {% for h in columns%}
+                        <th>{{ h }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feed in feeds.items %}
+                    <tr>
+                        {% for field in columns %}
+                        <td>{{ feed[field] }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% from "pagination.html" import render_pagination %}
+            {{ render_pagination(feeds, view, request.args.to_dict()) }}
+        </div>
+    </div>
+{% endblock %}

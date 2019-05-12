@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}记录的攻击{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="small-4 large-centered columns">
+            <h2>攻击记录</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="small-12 large-centered columns">
+            <div class="row">
+                <div class="small-4 columns">
+                    <h4>查询</h4>
+                </div>
+            </div>
+            <form id="attack-filter" action="" method="get">
+                <div class="row">
+                    <div class="small-3 columns">
+                        <label>选择传感器</label>
+                    </div>
+                    <div class="small-2 columns">
+                        <label>选择蜜罐类型</label>
+                    </div>
+                    <div class="small-2 columns">
+                        <label>选择日期</label>
+                    </div>
+                    <div class="small-2 columns">
+                        <label>端口</label>
+                    </div>
+                    <div class="small-2 pull-1 columns">
+                        <label>选择IP地址</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-3 columns">
+                        <select name="identifier">
+                            <option value="">所有传感器</option>
+                            {% for s in sensors %}
+                            <option {% if s.uuid == identifier %}selected{% endif %} value="{{ s.uuid }}">{{ s.hostname }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="small-2 columns">
+                        <select name="honeypot">
+                            <option value="">所有蜜罐</option>
+                            {% for pot in settings.supported_honeypots %}
+                            <option {% if pot == honeypot %}selected{% endif %} value="{{ pot }}">{{ pot }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="small-2 columns">
+                        <input type="text" name="timestamp" value="{{ timestamp }}" placeholder="日期格式:M-D-Y" />
+                    </div>
+                    <div class="small-2 columns">
+                        <input type="text" name="destination_port" value="{{ destination_port }}" placeholder="默认445" />
+                    </div>
+                    <div class="small-2 columns">
+                        <input type="text" name="source_ip" value="{{ source_ip }}" placeholder="8.8.8.8" />
+                    </div>
+                    <div class="small-2 columns">
+                        <input class="tiny button" type="submit" value="查询" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div style="max-width: 90.5rem;" class="row">
+        <div class="large-12 columns">
+            <table style="width:100%;">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>日期</th>
+                        <th>传感器</th>
+                        <th>城市</th>
+                        <th>攻击者源IP</th>
+                        <th>目的端口</th>
+                        <th>协议</th>
+                        <th>蜜罐</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for at in attacks.items %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ at.timestamp|fdate }}</td>
+                        <td>{{ get_sensor_name(at.identifier) }}</td>
+                        <td><img src="{{ get_flag_ip(at.source_ip) }}" width=25 height=50 /></td>
+                        <td>{{ at.source_ip }}</td>
+                        <td>{{ at.destination_port }}</td>
+                        <td>{{ at.protocol }}</td>
+                        <td>{{ at.honeypot }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% from "pagination.html" import render_pagination %}
+            {{ render_pagination(attacks, view, request.args.to_dict()) }}
+        </div>
+    </div>
+{% endblock %}
