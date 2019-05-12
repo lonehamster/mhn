@@ -1,0 +1,10 @@
+# -*- coding: UTF-8 -*-
+AUTH_INCORRECT_CREDENTIALS = '用户名或密码不正确。'
+AUTH_EMAIL_MISSING = '缺少邮箱号。'
+AUTH_PSSWD_MISSING = '缺少密码。'
+AUTH_USERNAME_EXISTS = '用户名已经存在。'
+AUTH_NOT_FOUND = '找不到用户{}。'
+AUTH_SMTP_ERROR = '发送邮件时出错。'
+AUTH_PASSWD_MATCH = '密码不匹配。'
+AUTH_RESET_HASH = '密码重置密钥无效。'
+AUTH_RESET_MISSING = '缺少字段。'
