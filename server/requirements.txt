@@ -20,3 +20,4 @@ pygal==2.4.0
 -e git://github.com/threatstream/hpfeeds-logger#egg=hpfeeds-logger
 geoip2==2.9.0
 pysqlite>=2.8.0
+GeoIP==1.3.2
