@@ -4,7 +4,7 @@ set -e
 set -x
 
 SCRIPTS=`dirname "$(readlink -f "$0")"`
-MHN_HOME=$SCRIPTS/..
+THH_HOME=$SCRIPTS/..
 
 if [ -f /etc/debian_version ]; then
     apt-get -y update
@@ -72,7 +72,7 @@ pip install -e git+https://github.com/threatstream/evnet.git#egg=evnet-dev
 pip install .
 deactivate
 
-mkdir -p /var/log/mhn
+mkdir -p /var/log/THH
 mkdir -p /etc/supervisor/
 mkdir -p /etc/supervisor/conf.d
 
@@ -81,8 +81,8 @@ cat >> /etc/supervisor/conf.d/hpfeeds-broker.conf <<EOF
 [program:hpfeeds-broker]
 command=/opt/hpfeeds/env/bin/python /opt/hpfeeds/broker/feedbroker.py
 directory=/opt/hpfeeds
-stdout_logfile=/var/log/mhn/hpfeeds-broker.log
-stderr_logfile=/var/log/mhn/hpfeeds-broker.err
+stdout_logfile=/var/log/THH/hpfeeds-broker.log
+stderr_logfile=/var/log/THH/hpfeeds-broker.err
 autostart=true
 autorestart=true
 startsecs=10
