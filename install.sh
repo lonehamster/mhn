@@ -9,9 +9,9 @@ fi
 set -e
 set -x
 
-MHN_HOME=`dirname "$(readlink -f "$0")"`
+THH_HOME=`dirname "$(readlink -f "$0")"`
 WWW_OWNER="www-data"
-SCRIPTS="$MHN_HOME/scripts/"
+SCRIPTS="$THH_HOME/scripts/"
 cd $SCRIPTS
 
 if [ -f /etc/redhat-release ]; then
@@ -48,7 +48,7 @@ if [ -f /etc/debian_version ]; then
     pip install --upgrade pip
 fi
 
-echo "[`date`] Starting Installation of all MHN packages"
+echo "[`date`] Starting Installation of all THH packages"
 
 echo "[`date`] ========= Installing hpfeeds ========="
  ./install_hpfeeds.sh
@@ -59,10 +59,10 @@ echo "[`date`] ========= Installing menmosyne ========="
 echo "[`date`] ========= Installing Honeymap ========="
  ./install_honeymap.sh
 
-echo "[`date`] ========= Installing MHN Server ========="
+echo "[`date`] ========= Installing THH Server ========="
  ./install_mhnserver.sh
 
-echo "[`date`] ========= MHN Server Install Finished ========="
+echo "[`date`] ========= THH Server Install Finished ========="
 echo ""
 
 while true;
@@ -75,7 +75,7 @@ do
         read SPLUNK_HOST
         echo -n "Splunk Forwarder Port: "
         read SPLUNK_PORT
-        echo "The Splunk Universal Forwarder will send all MHN logs to $SPLUNK_HOST:$SPLUNK_PORT"
+        echo "The Splunk Universal Forwarder will send all THH logs to $SPLUNK_HOST:$SPLUNK_PORT"
         ./install_splunk_universalforwarder.sh "$SPLUNK_HOST" "$SPLUNK_PORT"
         ./install_hpfeeds-logger-splunk.sh
         break
@@ -83,7 +83,7 @@ do
     then
         echo "Skipping Splunk integration"
         echo "The splunk integration can be completed at a later time by running this:"
-        echo "    cd /opt/mhn/scripts/"
+        echo "    cd /opt/THH/scripts/"
         echo "    sudo ./install_splunk_universalforwarder.sh <SPLUNK_HOST> <SPLUNK_PORT>"
         echo "    sudo ./install_hpfeeds-logger-splunk.sh"
         break
@@ -104,7 +104,7 @@ do
     then
         echo "Skipping ELK installation"
         echo "The ELK installation can be completed at a later time by running this:"
-        echo "    cd /opt/mhn/scripts/"
+        echo "    cd /opt/THH/scripts/"
         echo "    sudo ./install_elk.sh"
         break
     fi
@@ -113,9 +113,9 @@ done
 
 while true;
 do
-    echo -n "A properly configured firewall is highly encouraged while running MHN."
-    echo -n "This script can enable and configure UFW for use with MHN."
-    echo -n "Would you like to add MHN rules to UFW? (y/n) "
+    echo -n "A properly configured firewall is highly encouraged while running THH."
+    echo -n "This script can enable and configure UFW for use with THH."
+    echo -n "Would you like to add THH rules to UFW? (y/n) "
     read UFW
     if [ "$UFW" == "y" -o "$UFW" == "Y" ]
     then
@@ -125,15 +125,15 @@ do
     then
         echo "Skipping UFW configuration"
         echo "The UFW configuration can be completed at a later time by running this:"
-        echo "    cd /opt/mhn/scripts/"
+        echo "    cd /opt/THH/scripts/"
         echo "    sudo ./enable_ufw.sh"
         break
     fi
 done
 
-chown $WWW_OWNER /var/log/mhn/mhn.log
+chown $WWW_OWNER /var/log/THH/THH.log
 
-chown $WWW_OWNER /var/log/mhn/mhn.log
+chown $WWW_OWNER /var/log/THH/THH.log
 supervisorctl restart mhn-celery-worker
 
-echo "[`date`] Completed Installation of all MHN packages"
+echo "[`date`] Completed Installation of all THH packages"
