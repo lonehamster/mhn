@@ -3,7 +3,7 @@
 set -e
 set -x
 SCRIPTDIR=`dirname "$(readlink -f "$0")"`
-MHN_HOME=$SCRIPTDIR/..
+THH_HOME=$SCRIPTDIR/..
 
 
 if [ -f /etc/debian_version ]; then
