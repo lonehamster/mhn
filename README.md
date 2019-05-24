@@ -1,11 +1,14 @@
 The Heart of Honeypot(蜜罐之心)
 ====================
 使用方法：
+
 首先安装git
+
     $ Ubuntu系统下
     $ sudo apt install git -y
     
 安装THH    
+
     $ cd /opt/
     $ sudo git clone https://github.com/lonehamster/THH.git
     $ cd THH/
@@ -14,22 +17,22 @@ The Heart of Honeypot(蜜罐之心)
 
 配置
 
-   ===========================================================
+    ===========================================================
     THH Configuration
-   ===========================================================
-   Do you wish to run in Debug mode?: y/n n
-   Superuser email: YOUR_EMAIL@YOURSITE.COM
-   Superuser password: 
-   Server base url ["http://1.2.3.4"]: 
-   Honeymap url ["http://1.2.3.4:3000"]:
-   Mail server address ["localhost"]: 
-   Mail server port [25]: 
-   Use TLS for email?: y/n n
-   Use SSL for email?: y/n n
-   Mail server username [""]: 
-   Mail server password [""]: 
-   Mail default sender [""]: 
-   Path for log file ["mhn.log"]: 
+    ===========================================================
+    Do you wish to run in Debug mode?: y/n n
+    Superuser email: YOUR_EMAIL@YOURSITE.COM
+    Superuser password: 
+    Server base url ["http://1.2.3.4"]: 
+    Honeymap url ["http://1.2.3.4:3000"]:
+    Mail server address ["localhost"]: 
+    Mail server port [25]: 
+    Use TLS for email?: y/n n
+    Use SSL for email?: y/n n
+    Mail server username [""]: 
+    Mail server password [""]: 
+    Mail default sender [""]: 
+    Path for log file ["mhn.log"]: 
 
 
  sudo supervisorctl status
