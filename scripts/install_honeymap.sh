@@ -2,7 +2,7 @@
 
 set -x
 SCRIPTDIR=`dirname "$(readlink -f "$0")"`
-MHN_HOME=$SCRIPTDIR/..
+THH_HOME=$SCRIPTDIR/..
 
 if [ -f /etc/debian_version ]; then
     apt-get update
@@ -73,14 +73,14 @@ EOF
 cd ..
 make
 
-mkdir -p /var/log/mhn
+mkdir -p /var/log/THH
 
 cat > /etc/supervisor/conf.d/honeymap.conf <<EOF 
 [program:honeymap]
 command=/opt/honeymap/server/server
 directory=/opt/honeymap
-stdout_logfile=/var/log/mhn/honeymap.log
-stderr_logfile=/var/log/mhn/honeymap.err
+stdout_logfile=/var/log/THH/honeymap.log
+stderr_logfile=/var/log/THH/honeymap.err
 autostart=true
 autorestart=true
 startsecs=10
@@ -127,8 +127,8 @@ cat > /etc/supervisor/conf.d/geoloc.conf <<EOF
 [program:geoloc]
 command=/opt/hpfeeds/env/bin/python /opt/hpfeeds/examples/geoloc/geoloc.py /opt/hpfeeds/geoloc.json
 directory=/opt/hpfeeds/
-stdout_logfile=/var/log/mhn/geoloc.log
-stderr_logfile=/var/log/mhn/geoloc.err
+stdout_logfile=/var/log/THH/geoloc.log
+stderr_logfile=/var/log/THH/geoloc.err
 autostart=true
 autorestart=true
 startsecs=10
