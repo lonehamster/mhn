@@ -43,8 +43,8 @@ $INSTALLER update
 $INSTALLER -y install $REPOPACKAGES
 
 
-cd $MHN_HOME
-MHN_HOME=`pwd`
+cd $THH_HOME
+THH_HOME=`pwd`
 
 $VIRTUALENV  -p $PYTHON env
 . env/bin/activate
@@ -58,17 +58,17 @@ fi
 echo "DONE installing python virtualenv"
 
 mkdir -p /var/log/mhn &> /dev/null
-cd $MHN_HOME/server/
+cd $THH_HOME/server/
 
 echo "==========================================================="
-echo "  MHN Configuration"
+echo "  THH Configuration"
 echo "==========================================================="
 
 python generateconfig.py
 
 echo -e "\nInitializing database, please be patient. This can take several minutes"
 python initdatabase.py
-cd $MHN_HOME
+cd $THH_HOME
 
 mkdir -p /opt/www
 mkdir -p /etc/nginx
@@ -105,7 +105,7 @@ server {
     }
 
     location  /static {
-      alias $MHN_HOME/server/mhn/static;
+      alias $THH_HOME/server/mhn/static;
     }
 }
 EOF
@@ -113,10 +113,10 @@ EOF
 
 cat > /etc/supervisor/conf.d/mhn-uwsgi.conf <<EOF 
 [program:mhn-uwsgi]
-command=$MHN_HOME/env/bin/uwsgi -s /tmp/uwsgi.sock -w mhn:mhn -H $MHN_HOME/env --chmod-socket=666 -b 40960
-directory=$MHN_HOME/server
-stdout_logfile=/var/log/mhn/mhn-uwsgi.log
-stderr_logfile=/var/log/mhn/mhn-uwsgi.err
+command=$THH_HOME/env/bin/uwsgi -s /tmp/uwsgi.sock -w mhn:mhn -H $THH_HOME/env --chmod-socket=666 -b 40960
+directory=$THH_HOME/server
+stdout_logfile=/var/log/THH/mhn-uwsgi.log
+stderr_logfile=/var/log/THH/mhn-uwsgi.err
 autostart=true
 autorestart=true
 startsecs=10
@@ -124,25 +124,25 @@ EOF
 
 cat > /etc/supervisor/conf.d/mhn-celery-worker.conf <<EOF 
 [program:mhn-celery-worker]
-command=$MHN_HOME/env/bin/celery worker -A mhn.tasks --loglevel=INFO
-directory=$MHN_HOME/server
-stdout_logfile=/var/log/mhn/mhn-celery-worker.log
-stderr_logfile=/var/log/mhn/mhn-celery-worker.err
+command=$THH_HOME/env/bin/celery worker -A mhn.tasks --loglevel=INFO
+directory=$THH_HOME/server
+stdout_logfile=/var/log/THH/mhn-celery-worker.log
+stderr_logfile=/var/log/THH/mhn-celery-worker.err
 autostart=true
 autorestart=true
 startsecs=10
 user=$NGINXUSER
 EOF
 
-touch /var/log/mhn/mhn-celery-worker.log /var/log/mhn/mhn-celery-worker.err
-chown $NGINXUG /var/log/mhn/mhn-celery-worker.*
+touch /var/log/THH/mhn-celery-worker.log /var/log/THH/mhn-celery-worker.err
+chown $NGINXUG /var/log/THH/mhn-celery-worker.*
 
 cat > /etc/supervisor/conf.d/mhn-celery-beat.conf <<EOF 
 [program:mhn-celery-beat]
-command=$MHN_HOME/env/bin/celery beat -A mhn.tasks --loglevel=INFO
-directory=$MHN_HOME/server
-stdout_logfile=/var/log/mhn/mhn-celery-beat.log
-stderr_logfile=/var/log/mhn/mhn-celery-beat.err
+command=$THH_HOME/env/bin/celery beat -A mhn.tasks --loglevel=INFO
+directory=$THH_HOME/server
+stdout_logfile=/var/log/THH/mhn-celery-beat.log
+stderr_logfile=/var/log/THH/mhn-celery-beat.err
 autostart=true
 autorestart=true
 startsecs=10
@@ -152,7 +152,7 @@ MHN_UUID=`python -c 'import uuid;print str(uuid.uuid4())'`
 SECRET=`python -c 'import uuid;print str(uuid.uuid4()).replace("-","")'`
 /opt/hpfeeds/env/bin/python /opt/hpfeeds/broker/add_user.py "collector" "$SECRET" "" "geoloc.events"
 
-cat > $MHN_HOME/server/collector.json <<EOF
+cat > $THH_HOME/server/collector.json <<EOF
 {
   "IDENT": "collector",
   "SECRET": "$SECRET",
@@ -162,17 +162,17 @@ EOF
 
 cat > /etc/supervisor/conf.d/mhn-collector.conf <<EOF 
 [program:mhn-collector]
-command=$MHN_HOME/env/bin/python collector_v2.py collector.json
-directory=$MHN_HOME/server
-stdout_logfile=/var/log/mhn/mhn-collector.log
-stderr_logfile=/var/log/mhn/mhn-collector.err
+command=$THH_HOME/env/bin/python collector_v2.py collector.json
+directory=$THH_HOME/server
+stdout_logfile=/var/log/THH/mhn-collector.log
+stderr_logfile=/var/log/THH/mhn-collector.err
 autostart=true
 autorestart=true
 startsecs=10
 EOF
 
-touch $MHN_HOME/server/mhn.log
-chown $NGINXUG -R $MHN_HOME/server/*
+touch $THH_HOME/server/THH.log
+chown $NGINXUG -R $THH_HOME/server/*
 
 supervisorctl update
 /etc/init.d/nginx restart
