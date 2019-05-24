@@ -34,8 +34,9 @@ The Heart of Honeypot(蜜罐之心)
     Mail default sender [""]: 
     Path for log file ["mhn.log"]: 
 
+查看进程状况
 
- sudo supervisorctl status
+    sudo supervisorctl status
     geoloc                           RUNNING    pid 31443, uptime 0:00:12
     honeymap                         RUNNING    pid 30826, uptime 0:08:54
     hpfeeds-broker                   RUNNING    pid 10089, uptime 0:36:42
