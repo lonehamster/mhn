@@ -7,18 +7,18 @@ The Heart of Honeypot(蜜罐之心)
     $ Ubuntu系统下
     $ sudo apt install git -y
     
-安装THH    
+安装mhn    
 
     $ cd /opt/
-    $ sudo git clone https://github.com/lonehamster/THH.git
-    $ cd THH/
+    $ sudo git clone https://github.com/lonehamster/mhn.git
+    $ cd mhn/
     $ sudo ./install.sh
 
 
 配置
 
     ===========================================================
-    THH Configuration
+    mhn Configuration
     ===========================================================
     Do you wish to run in Debug mode?: y/n n
     Superuser email: YOUR_EMAIL@YOURSITE.COM
